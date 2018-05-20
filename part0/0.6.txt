@@ -1,0 +1,7 @@
+kayttaja->selain: Käyttäjä syöttää uuden muistiinpanon tiedot lomakkeelle ja painaa Talleta
+note right of selain
+    selaimessa suoritettava javascript-koodi lisää uuden elementin jo ladatulle sivulle
+end note
+selain->kayttaja: Selain renderöi uuden DOM:n käyttäjälle
+selain->palvelin: asynkroninen POST fullstack-exampleapp.herokuapp.com/new_note_spa
+palvelin->selain: status 201, kuittaus muistiinpanon luonnin onnistumisesta

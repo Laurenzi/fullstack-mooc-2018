@@ -1,0 +1,38 @@
+kayttaja->selain:
+note left of selain
+käyttäjä kirjottaa selaimen osoiteriville fullstack-exampleapp.herokuapp.com/spa
+ja painaa enter
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/spa
+note left of palvelin
+    Palvelin muodostaa html-sivun
+end note
+palvelin->selain: status 200, sivun html-koodi
+
+selain->kayttaja: selaimen muodostama esitys html-sivusta
+
+note right of selain
+    selain huomaa ladatun html-sivun sisältämät viittaukset main.css 
+    ja main.js -tiedostoihin ja lataa ne palvelimelta
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, tyylitiedoston sisältämät tyylimääritykset
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, javascript-kielinen koodi
+
+note right of selain
+    selain tulkitsee tyylitiedoston sekä javascript-kielisen tiedoston sisällöt
+end note
+
+selain->palvelin: asynkroninen GET fullstack-exampleapp.herokuapp.com/data.json
+palvelin->selain: status 200, muistiinpanot json-muodossa
+
+note right of selain:
+    selaimen javascript-kielinen koodi käsittelee asynkronisen GET-pyynnön
+    vastauksen ja päivittää jo ladatun sivun HTML-koodia
+end note
+selain->kayttaja: selaimen muodostama esitys muutetusta html-sivusta
+

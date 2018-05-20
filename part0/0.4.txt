@@ -1,0 +1,52 @@
+kayttaja->selain:
+note left of selain
+kayttaja kirjottaa lomakkeen kenttään muistiinpanon ja 
+painaa Talleta-nappia.
+end note
+note right of selain
+  Selain lähettää uuden muistiinpanon tiedot palvelimelle
+end note
+selain->palvelin: POST fullstack-exampleapp.herokuapp.com/notes
+
+palvelin->selain: status 302, uudelleenohjaus. palvelin pyytää selainta tekemään GET-pyynnön osoitteeseen fullstack-exampleapp.herokuapp/notes
+
+note right of selain
+    Selain noudattaa uudelleenohjauspyyntöä
+end note
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/notes
+
+note left of palvelin
+    Muodostetaan sivun HTML-koodi, joka sisältää muistiinpanojen
+    lisäämiseen tarkoitetun lomakkeen
+end note
+palvelin->selain: status 200, sivun html-koodi
+note left of selain
+ selain näyttää palvelimen palauttaman HTML:n
+ jossa muistiinpanon lisäämiseen tarkoitettu lomake
+end note
+
+note right of selain
+    selain huomaa HTML-koodin viittaavan kahteen tiedostoon (main.css ja main.js)
+    ja tekee pyynnöt hakeakseen ne palvelimelta
+end note
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.css
+palvelin->selain: status 200, main.css
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/main.js
+palvelin->selain: status 200, main.js
+
+note right of selain
+ selain suorittaa main.js:n sisältämän javascript-kielisen koodin
+end note
+
+selain->palvelin: GET fullstack-exampleapp.herokuapp.com/data.json
+note right of selain
+ haetaan muistiinpanot palvelimelta
+end note
+palvelin->selain: status 200, muistiinpanot JSON-formaatissa
+
+selain->kayttaja:
+note left of selain
+ selain luo HTML:n muistiinpanoja vastaavat elementit ja näyttää ne käyttäjälle
+end note
+
