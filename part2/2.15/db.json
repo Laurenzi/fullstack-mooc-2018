@@ -1,0 +1,39 @@
+{
+  "persons": [
+    {
+      "name": "Arto Hellas",
+      "number": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Martti Tienari",
+      "number": "040-123456",
+      "id": 2
+    },
+    {
+      "name": "Arto Järvinen",
+      "number": "040-123456",
+      "id": 3
+    },
+    {
+      "name": "Lea Kutvonen",
+      "number": "040-123456",
+      "id": 4
+    },
+    {
+      "name": "Testi Testinen",
+      "number": "040-98765",
+      "id": 5
+    },
+    {
+      "name": "Mirjami Pyylevä",
+      "number": "040-999555",
+      "id": 6
+    },
+    {
+      "name": "Herra Pallopää",
+      "number": "060-123456",
+      "id": 7
+    }
+  ]
+}
