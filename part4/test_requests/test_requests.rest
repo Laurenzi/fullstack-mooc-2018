@@ -1,0 +1,14 @@
+GET http://localhost:3003/api/blogs
+
+POST http://localhost:3003/api/blogs
+content-type: application/json
+
+{
+  "title": "Reiska",
+  "author": "vILLEgalle",
+  "url": "http://villegalle.jee",
+  "likes": "999"
+}
+
+
+DELETE http://localhost:3003/api/blogs/1
