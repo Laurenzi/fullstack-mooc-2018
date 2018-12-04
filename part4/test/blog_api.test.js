@@ -77,6 +77,47 @@ test('blogs are returned', async () => {
   expect(response.body).toEqual(initialBlogs)
 })
 
+test('a blog can be added via post', async () => {
+  const blogObject = {
+    title: 'Paranoidi Optimisti1',
+    author: 'Risto Siilasmaa',
+    url: 'http://ristosiilasmaa.com',
+    likes: 1000,
+  }
+  const response = await api
+    .post('/api/blogs').send(blogObject)
+  expect(response.body).toMatchObject(blogObject)
+})
+
+test('a blog created without likes will have 0 likes', async () => {
+  const blogObject = {
+    title: 'Paranoidi Optimisti2',
+    author: 'Risto Siilasmaa',
+    url: 'http://ristosiilasmaa.com',
+  }
+  const response = await api
+    .post('/api/blogs').send(blogObject)
+
+  const expected = await Blog.findOne({_id: response.body._id})
+
+  expect(response.status).toBe(201)
+  expect(response.body).toMatchObject({title: 'Paranoidi Optimisti2', author: 'Risto Siilasmaa', url: 'http://ristosiilasmaa.com', likes: 0})
+  expect(expected).toMatchObject({title: 'Paranoidi Optimisti2', author: 'Risto Siilasmaa', likes: 0, url: 'http://ristosiilasmaa.com'})
+})
+
+test('trying to create a blog without url or title returns with status 400', async () => {
+  const blogObject = {
+    author: 'Risto Reipas',
+    likes: 1919
+  }
+
+  const response = await api
+    .post('/api/blogs/').send(blogObject)
+
+  expect(response.status).toBe(400)
+
+})
+
 afterAll(() => {
   server.close()
 })
