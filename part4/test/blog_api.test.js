@@ -2,14 +2,14 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
-const helper = require('../test/test_helper')
+const { initialBlogs, blogsInDb, format, nonExistingId} = require('../test/test_helper')
 
 describe('When there are initially some blogs saved', async () => {
 
   beforeAll(async () => {
     await Blog.remove({})
   
-    for (let blog of helper.initialBlogs) {
+    for (let blog of initialBlogs) {
       let blogObject = new Blog(blog)
       await blogObject.save()
     }
@@ -21,11 +21,11 @@ describe('When there are initially some blogs saved', async () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual(helper.initialBlogs)
+    expect(response.body).toEqual(initialBlogs)
   })
 
   test('single blog can be returned as json by GET /api/blogs/:id', async () => {
-    const blogsInDatabase = await helper.blogsInDb()
+    const blogsInDatabase = await  blogsInDb()
     const aBlogId = blogsInDatabase[0].id
     
     const response = await api
@@ -33,11 +33,11 @@ describe('When there are initially some blogs saved', async () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual(helper.initialBlogs[0])
+    expect(response.body).toEqual( initialBlogs[0])
   })
 
   test('404 returned by GET /api/blogs/:id with nonexisting valid id', async () => {
-    const validNonexistingId = await helper.nonExistingId()
+    const validNonexistingId = await  nonExistingId()
 
     const response = await api
       .get(`/api/blogs/${validNonexistingId}`)
@@ -95,6 +95,35 @@ describe('Addition of a new blog', async () => {
 
     expect(response.status).toBe(400)
 
+  })
+
+})
+
+describe('Deletion of a blog', async () => {
+  let addedBlog
+
+  beforeAll(async () => {
+    addedBlog = new Blog({
+      title: 'poista minut pyynnöllä HTTP DELETE',
+      url: 'https://delete'
+    })
+    await addedBlog.save()
+  })
+
+  test('DELETE to /api/blogs/:id works with proper statuscode', async () => {
+    const blogsAtStart = await blogsInDb()
+
+    await api
+      .delete(`/api/blogs/${addedBlog._id}`)
+      .expect(204)
+
+    const blogsAfterOperation = await blogsInDb()
+    console.log('blogsAfterOperation:', blogsAfterOperation)
+    console.log('blogsAtStart:', blogsAtStart)
+    const content = blogsAfterOperation
+
+    expect(content).not.toContain(addedBlog)
+    expect(blogsAfterOperation.length).toBe(blogsAtStart.length - 1)
   })
 
 })

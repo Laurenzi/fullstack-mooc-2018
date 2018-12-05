@@ -66,7 +66,7 @@ const blogsInDb = async () => {
 }
 
 const nonExistingId = async () => {
-  const blog = new Blog()
+  const blog = new Blog({title: 'aa', author:'öö', url:'exists'})
   await blog.save()
   await blog.remove()
 

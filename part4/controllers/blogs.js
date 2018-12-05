@@ -35,15 +35,32 @@ blogsRouter.post('/', async (request, response) => {
     const error = blog.validateSync()
     if (error) {
       console.log(error)
-      return response.status(400).send({error: error})
+      return response.status(400).send({ error: error })
     }
     const result = await blog
       .save()
     return response.status(201).json(result)
   } catch (exception) {
     console.log(exception)
-    response.status(400).send({error: 'virhe'})
+    response.status(400).send({ error: 'virhe'} )
   }
-}) 
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+  try {
+    const id = request.param.id
+    console.log('poistetaan seuraavalla id:lla:', id)
+    const blog = await Blog.findOne({ _id: request.params.id })
+    if (blog) {
+      await Blog.deleteOne(blog)
+      response.status(204).end()
+    } else {
+      return response.status(404).end()
+    }
+  } catch (exception) {
+    console.log(exception)
+    response.status(400).send( {error: 'unknown error'} )
+  }
+})
 
 module.exports = blogsRouter
