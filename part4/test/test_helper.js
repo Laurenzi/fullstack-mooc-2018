@@ -1,4 +1,6 @@
+const bcrypt = require('bcrypt')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
   {
@@ -51,6 +53,21 @@ const initialBlogs = [
   }
 ]
 
+const initialUsers = [
+  {
+    _id: '5c09f94bbda2ab3741db9e35',
+    username: '123456',
+    name: 'Mystery Man',
+    passwordHash: bcrypt.hashSync('testipassu', 10)
+  },
+  {
+    _id: '5c09f94bbda2ab3741db9e36',
+    username: 'admin',
+    name: 'Ragnar Gundir',
+    passwordHash: bcrypt.hashSync('testipassuja', 10)
+  }
+]
+
 const format = (blog) => {
   return {
     author: blog.content,
@@ -65,6 +82,10 @@ const blogsInDb = async () => {
   return await Blog.find({})
 }
 
+const usersInDb = async () => {
+  return await User.find({})
+}
+
 const nonExistingId = async () => {
   const blog = new Blog({title: 'aa', author:'öö', url:'exists'})
   await blog.save()
@@ -76,4 +97,4 @@ const nonExistingId = async () => {
 
 
 
-module.exports =  { initialBlogs, format, blogsInDb, nonExistingId }
+module.exports =  { initialBlogs, initialUsers, format, blogsInDb, usersInDb, nonExistingId }

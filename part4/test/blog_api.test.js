@@ -4,7 +4,7 @@ const api = supertest(app)
 const Blog = require('../models/blog')
 const { initialBlogs, blogsInDb, format, nonExistingId} = require('../test/test_helper')
 
-describe('When there are initially some blogs saved', async () => {
+describe.skip('When there are initially some blogs saved', async () => {
 
   beforeAll(async () => {
     await Blog.remove({})
@@ -54,7 +54,7 @@ describe('When there are initially some blogs saved', async () => {
   
 })
 
-describe('Addition of a new blog', async () => {
+describe.skip('Addition of a new blog', async () => {
 
   test('a blog created without likes will have 0 likes', async () => {
     const blogObject = {
@@ -99,7 +99,7 @@ describe('Addition of a new blog', async () => {
 
 })
 
-describe('Deletion of a blog', async () => {
+describe.skip('Deletion of a blog', async () => {
   let addedBlog
 
   beforeAll(async () => {
@@ -125,7 +125,44 @@ describe('Deletion of a blog', async () => {
     expect(content).not.toContain(addedBlog)
     expect(blogsAfterOperation.length).toBe(blogsAtStart.length - 1)
   })
+})
 
+describe.skip('Modification of a blog', async () => {
+  let addedBlog
+
+  beforeAll(async () => {
+    addedBlog = new Blog({
+      author: 'test',
+      title: 'Muuta minua pyynnöllä HTTP PUT',
+      url: 'https://put',
+      likes: 1
+    })
+    await addedBlog.save()
+  })
+
+  test('PUT to /api/blogs/:id with new content works with proper statuscode', async () => {
+    const blogsAtStart = await blogsInDb()
+
+    const modifiedBlog = {
+      author: 'testinen',
+      title: 'Älä muuta minua!',
+      url: 'https://immutable-me',
+      likes: 99999
+    }
+
+    await api
+      .put(`/api/blogs/${addedBlog._id}`)
+      .send(modifiedBlog)
+      .expect(204)
+
+    const blogsAfterOperation = await blogsInDb()
+    const ids = await blogsAfterOperation.map(blog => blog.id)
+    const expectedId = ids.filter(id => id == addedBlog.id)
+
+    expect(expectedId[0]).toEqual(addedBlog.id)
+    const blog = await  blogsAfterOperation.filter(blog => blog.id == addedBlog.id)
+    expect(blog[0]).toMatchObject(modifiedBlog)
+  })
 })
 
 afterAll(() => {

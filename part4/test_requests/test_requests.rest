@@ -1,4 +1,4 @@
-GET http://localhost:3003/api/blogs
+GET http://localhost:3001/api/blogs
 
 POST http://localhost:3001/api/blogs
 content-type: application/json
@@ -12,3 +12,18 @@ content-type: application/json
 
 
 DELETE http://localhost:3001/api/blogs/5bfe1c81f3c96b1d18fcc693
+
+
+GET http://localhost:3001/api/blogs/5bfe1c81f3c96b1d18fcc693
+
+PUT http://localhost:3001/api/blogs/5bfe1c81f3c96b1d18fcc693
+content-type: application/json
+
+{
+  "title": "test",
+  "author": "testinen",
+  "likes": 10101,
+  "url": "http://villegalle.jee"
+}
+
+GET http://localhost:3001/api/blogs/5bfe1c81f3c96b1d18fcc693
