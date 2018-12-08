@@ -40,6 +40,41 @@ content-type: application/json
   "password": "justatest!"
 }
 
+POST http://localhost:3001/api/users
+content-type: application/json
+
+{
+  "username": "testi2",
+  "name:": "Testinen2",
+  "adult": false,
+  "password": "justatest2!"
+}
+
+
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{ "username": "testi1", "password": "justatest!" }
+
+
+
+POST http://localhost:3001/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpMSIsImlkIjoiNWMwYjY2ZWFiOWZkMTEzY2I1MjkxNjhhIiwiaWF0IjoxNTQ0MjU1NDczfQ.hVfDYiQRSA2KhLLtLW2f4_odvb43Oj4kd63KjzZ9Xo8
+content-type: application/json
+
+{
+  "title": "Reiska ja elämisen taito 2",
+  "author": "vILLEgalle & kumppanit",
+  "url": "http://villegalle.jee",
+  "likes": 669969696
+}
+
+POST http://localhost:3001/api/login
+content-type: application/json
+
+{ "username": "testi2", "password": "justatest2!" }
+
+
 POST http://localhost:3001/api/blogs
 content-type: application/json
 

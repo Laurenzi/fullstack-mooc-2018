@@ -12,7 +12,24 @@ usersRouter.get('/', async (request, response) => {
     })
     return response.json(users.map(user => User.format(user)))
   } catch (exception) {
-    return response.status(400).send({ error: 'unknown error' })
+    return response.status(500).send({ error: 'unknown error' })
+  }
+})
+
+usersRouter.get('/:id', async (request, response) => {
+  try {
+    const user = await User.findOne({_id: request.params.id}).populate('blogs', {
+      title: 1,
+      author: 1,
+      url: 1,
+      likes: 1
+    })
+    if (!user) {
+      return response.status(404).end()
+    }
+    return response.json(User.format(user))
+  } catch (exception) {
+    return response.status(500).send( { error: 'unknown error'} )
   }
 })
 
