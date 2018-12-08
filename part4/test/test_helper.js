@@ -68,13 +68,23 @@ const initialUsers = [
   }
 ]
 
-const format = (blog) => {
+const formatBlog = (blog) => {
   return {
     author: blog.content,
     title: blog.important,
     url: blog.url,
     likes: blog.likes,
     id: blog._id
+  }
+}
+
+const formatUser = (user) => {
+  return {
+    username: user.username,
+    name: user.name,
+    adult: user.adult,
+    blogs: user.blogs,
+    id: user._id
   }
 }
 
@@ -97,4 +107,4 @@ const nonExistingId = async () => {
 
 
 
-module.exports =  { initialBlogs, initialUsers, format, blogsInDb, usersInDb, nonExistingId }
+module.exports =  { initialBlogs, initialUsers, formatBlog, formatUser, blogsInDb, usersInDb, nonExistingId }

@@ -4,10 +4,10 @@ POST http://localhost:3001/api/blogs
 content-type: application/json
 
 {
-  "title": "Reiska",
-  "author": "vILLEgalle",
+  "title": "Reiska ja elämisen taito 1",
+  "author": "vILLEgalle & kumppanit",
   "url": "http://villegalle.jee",
-  "likes": "999"
+  "likes": 669969696
 }
 
 
@@ -20,10 +20,27 @@ PUT http://localhost:3001/api/blogs/5bfe1c81f3c96b1d18fcc693
 content-type: application/json
 
 {
-  "title": "test",
-  "author": "testinen",
-  "likes": 10101,
-  "url": "http://villegalle.jee"
+  "title": "Reiska ja Elämän Taito",
+  "author": "Reiska McGee",
+  "likes": 696969,
+  "url": "http://reiskamies.jee"
 }
 
 GET http://localhost:3001/api/blogs/5bfe1c81f3c96b1d18fcc693
+
+GET http://localhost:3001/api/users
+
+POST http://localhost:3001/api/users
+content-type: application/json
+
+{
+  "username": "testi1",
+  "name:": "Testinen1",
+  "adult": false,
+  "password": "justatest!"
+}
+
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{"author": "Risto Siilasmaa", "likes": 1000, "title": "Paranoidi Optimisti1", "url": "http://ristosiilasmaa.com"}

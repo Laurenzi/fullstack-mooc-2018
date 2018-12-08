@@ -4,8 +4,13 @@ const User = require('../models/user')
 
 usersRouter.get('/', async (request, response) => {
   try {
-    const users = await User.find({})
-    return response.send(users)
+    const users = await User.find({}).populate('blogs', {
+      title: 1,
+      author: 1,
+      url: 1,
+      likes: 1
+    })
+    return response.json(users.map(user => User.format(user)))
   } catch (exception) {
     return response.status(400).send({ error: 'unknown error' })
   }
@@ -41,7 +46,7 @@ usersRouter.post('/', async (request, response) => {
       name: result.name,
       adult: result.adult
     }
-    return response.status(201).send(returnedUserObject)
+    return response.status(200).json(User.format(returnedUserObject))
   } catch (exception) {
     return response.status(400).send({ error: 'unknown error' })
   }

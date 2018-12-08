@@ -2,13 +2,21 @@ const supertest = require('supertest')
 const { app, server } = require('../index')
 const api = supertest(app)
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const { initialBlogs, blogsInDb, format, nonExistingId} = require('../test/test_helper')
 
-describe.skip('When there are initially some blogs saved', async () => {
+describe('When there are initially some blogs saved', async () => {
 
   beforeAll(async () => {
     await Blog.remove({})
-  
+    await User.remove({})
+    new User({
+      username: "test case",
+      name: "nomen est omen",
+      adult: true
+    })
+    await User.save()
+
     for (let blog of initialBlogs) {
       let blogObject = new Blog(blog)
       await blogObject.save()
@@ -21,7 +29,7 @@ describe.skip('When there are initially some blogs saved', async () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual(initialBlogs)
+    expect(response.body).toEqual(initialBlogs.map(blog => Blog.format(blog)))
   })
 
   test('single blog can be returned as json by GET /api/blogs/:id', async () => {
@@ -33,7 +41,7 @@ describe.skip('When there are initially some blogs saved', async () => {
       .expect(200)
       .expect('Content-Type', /application\/json/)
 
-    expect(response.body).toEqual( initialBlogs[0])
+    expect(response.body).toEqual(Blog.format(initialBlogs[0]))
   })
 
   test('404 returned by GET /api/blogs/:id with nonexisting valid id', async () => {
@@ -54,7 +62,7 @@ describe.skip('When there are initially some blogs saved', async () => {
   
 })
 
-describe.skip('Addition of a new blog', async () => {
+describe('Addition of a new blog', async () => {
 
   test('a blog created without likes will have 0 likes', async () => {
     const blogObject = {
@@ -99,7 +107,7 @@ describe.skip('Addition of a new blog', async () => {
 
 })
 
-describe.skip('Deletion of a blog', async () => {
+describe('Deletion of a blog', async () => {
   let addedBlog
 
   beforeAll(async () => {
@@ -127,7 +135,7 @@ describe.skip('Deletion of a blog', async () => {
   })
 })
 
-describe.skip('Modification of a blog', async () => {
+describe('Modification of a blog', async () => {
   let addedBlog
 
   beforeAll(async () => {
