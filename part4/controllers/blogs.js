@@ -4,14 +4,6 @@ const Blog = require('../models/blog')
 const User = require('../models/user')
 
 
-const getTokenFrom = (request) => {
-  const authorization = request.get('authorization')
-  if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
-    return authorization.substring(7)
-  }
-  return null
-}
-
 blogsRouter.get('/', async (request, response) => {
   try {
     const blogs = await Blog
@@ -49,11 +41,11 @@ blogsRouter.post('/', async (request, response) => {
   const body = request.body
 
   try {
-    const token = getTokenFrom(request)
+    //const token = getTokenFrom(request)
     console.log("SECRET:", process.env.SECRET)
-    const decodedToken = jwt.verify(token, process.env.SECRET)
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
 
-    if (!token || !decodedToken.id) {
+    if (!request.token || !decodedToken.id) {
       return response.status(401).json({ error: 'token missing or invalid' })
     }
     
@@ -88,12 +80,29 @@ blogsRouter.post('/', async (request, response) => {
 
 blogsRouter.delete('/:id', async (request, response) => {
   try {
-    const id = request.param.id
+    const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+    if (!request.token || !decodedToken.id) {
+      return response.status(401).json({ error: 'token missing or invalid' })
+    }
+
+    const id = request.params.id
     console.log('poistetaan seuraavalla id:lla:', id)
     const blog = await Blog.findOne({ _id: request.params.id })
+
+    
+
     if (blog) {
-      await Blog.deleteOne(blog)
-      return response.status(204).end()
+      console.log("saatiin:", decodedToken.id)
+      console.log("blogin omistajan id:", blog.user.toString())
+      const user = await User.findById(decodedToken.id)
+      if (blog.user.toString() === decodedToken.id) {
+        await Blog.deleteOne(blog)
+        return response.status(204).end()
+      } else {
+        console.log("ei oikeutta poistaa blogia.")
+        return response.status(401).send({ error: 'not authorized'})
+      }
     } else {
       return response.status(404).end()
     }

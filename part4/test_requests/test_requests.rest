@@ -28,6 +28,16 @@ content-type: application/json
 
 GET http://localhost:3001/api/blogs/5bfe1c81f3c96b1d18fcc693
 
+POST http://localhost:3001/api/users
+content-type: application/json
+
+{
+  "username": "lisaa2",
+  "name": "Usereita2!",
+  "adult": false,
+  "password": "tetetete"
+}
+
 GET http://localhost:3001/api/users
 
 POST http://localhost:3001/api/users
@@ -35,7 +45,7 @@ content-type: application/json
 
 {
   "username": "testi1",
-  "name:": "Testinen1",
+  "name": "Testinen1",
   "adult": false,
   "password": "justatest!"
 }
@@ -45,7 +55,7 @@ content-type: application/json
 
 {
   "username": "testi2",
-  "name:": "Testinen2",
+  "name": "Testinen2",
   "adult": false,
   "password": "justatest2!"
 }
@@ -59,21 +69,34 @@ content-type: application/json
 
 
 POST http://localhost:3001/api/blogs
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpMSIsImlkIjoiNWMwYjY2ZWFiOWZkMTEzY2I1MjkxNjhhIiwiaWF0IjoxNTQ0MjU1NDczfQ.hVfDYiQRSA2KhLLtLW2f4_odvb43Oj4kd63KjzZ9Xo8
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpMSIsImlkIjoiNWMwYzliOWYwODlmN2YxM2I3ZDY1MTc4IiwiaWF0IjoxNTQ0MzMwMjA5fQ.EwHssQ-DHDByy5-qjl5vgQmdCcLifKhxa4shd33HxeI
 content-type: application/json
 
 {
-  "title": "Reiska ja elämisen taito 2",
+  "title": "Reiska ja elämisen taito 4-5",
   "author": "vILLEgalle & kumppanit",
-  "url": "http://villegalle.jee",
+  "url": "http://villegalle.jee.ownz",
   "likes": 669969696
 }
+
+DELETE http://localhost:3001/api/blogs/5c0c9bff089f7f13b7d65179
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpMSIsImlkIjoiNWMwYzliOWYwODlmN2YxM2I3ZDY1MTc4IiwiaWF0IjoxNTQ0MzMwMjA5fQ.EwHssQ-DHDByy5-qjl5vgQmdCcLifKhxa4shd33HxeI
 
 POST http://localhost:3001/api/login
 content-type: application/json
 
 { "username": "testi2", "password": "justatest2!" }
 
+POST http://localhost:3001/api/blogs
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpMiIsImlkIjoiNWMwYjc4Yzc4ODI2MzcxZDk0ZTcxNzAxIiwiaWF0IjoxNTQ0MjU1NzQ2fQ.1e_yw5GanPWRLWvzA7TKSDyvNVjCk8WeDsuIo58L6wU
+content-type: application/json
+
+{
+  "title": "Reiska ja elämisen taito 3",
+  "author": "vILLEgalle & kumppanit",
+  "url": "http://villegallee.jee",
+  "likes": 669696
+}
 
 POST http://localhost:3001/api/blogs
 content-type: application/json

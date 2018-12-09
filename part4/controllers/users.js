@@ -55,7 +55,7 @@ usersRouter.post('/', async (request, response) => {
       passwordHash,
       adult: body.adult == undefined || body.adult == null ? true : body.adult
     })
-
+    console.log("tallentamassa seuraavaa käyttäjää:", user)
     const result = await user.save()
     const returnedUserObject = {
       _id: result.id,

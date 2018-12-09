@@ -23,6 +23,7 @@ mongoose.connect(mongoUrl)
 
 app.use(cors())
 app.use(bodyParser.json())
+app.use(middleware.tokenExtractor)
 app.use(middleware.logger)
 
 app.use('/api/blogs', blogsRouter)
