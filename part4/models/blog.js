@@ -18,7 +18,7 @@ const blogsSchema = new mongoose.Schema({
 blogsSchema.statics.format = (blog) => {
   return {
     id: blog._id,
-    title: blog.username,
+    title: blog.title,
     author: blog.author,
     url: blog.url,
     likes: blog.likes,

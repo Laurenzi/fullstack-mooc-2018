@@ -79,8 +79,8 @@ content-type: application/json
   "likes": 669969696
 }
 
-DELETE http://localhost:3001/api/blogs/5c0c9bff089f7f13b7d65179
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpMSIsImlkIjoiNWMwYzliOWYwODlmN2YxM2I3ZDY1MTc4IiwiaWF0IjoxNTQ0MzMwMjA5fQ.EwHssQ-DHDByy5-qjl5vgQmdCcLifKhxa4shd33HxeI
+DELETE http://localhost:3001/api/blogs/5c0c9f9447e80a1a89e5a7fe
+Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3RpMiIsImlkIjoiNWMwYzlmYjA0N2U4MGExYTg5ZTVhN2ZmIiwiaWF0IjoxNTQ0MzMxMTkyfQ.M7Zf95VNBu3Ci0715NNmqKQehR0z9lI8RcZ2AiqXJMg
 
 POST http://localhost:3001/api/login
 content-type: application/json
