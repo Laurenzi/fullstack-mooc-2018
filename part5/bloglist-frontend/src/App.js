@@ -1,5 +1,6 @@
 import React from 'react'
 import Blog from './components/Blog'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -41,7 +42,6 @@ class App extends React.Component {
   }
 
   login = async (event) => {
-    console.log("login attempt:")
     event.preventDefault()
     try {
       const user = await loginService.login({
@@ -75,13 +75,19 @@ class App extends React.Component {
       url: this.state.url
     }
     const createdBlog = await blogService.create(blogObject)
-    this.setState( {title: '', author: '', url: '', blogs: this.state.blogs.concat(createdBlog)} )
+    this.setState( {notification: `a new blog '${blogObject.title}' by ${blogObject.author} was added`, title: '', author: '', url: '', blogs: this.state.blogs.concat(createdBlog)} )
+    setTimeout(() => {
+      this.setState({ notification: null })
+    }, 5000)
   }
 
   render() {
+    const errorMessage = this.state.error ? <Notification message={this.state.error}/> : null
+    const notification = this.state.notification ? <Notification message={this.state.notification}/> : null
     if (this.state.user == null) {
       return (
         <div>
+          {errorMessage}
           <h2>Kirjaudu sovellukseen</h2>
           <form onSubmit={this.login}>
           <div>
@@ -106,6 +112,7 @@ class App extends React.Component {
           <button onClick={this.logout}>log out</button>
         </div>
         <div>
+        {notification}
           <h2>Create new</h2>
           <form onSubmit={this.newBlog}>
             <div>
