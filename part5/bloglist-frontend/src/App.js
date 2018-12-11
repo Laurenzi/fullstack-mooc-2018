@@ -1,6 +1,9 @@
 import React from 'react'
 import Blog from './components/Blog'
 import Notification from './components/Notification'
+import LoginForm from './components/LoginForm'
+import BlogForm from './components/BlogForm'
+import Togglable from './components/Togglable'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -80,60 +83,64 @@ class App extends React.Component {
       this.setState({ notification: null })
     }, 5000)
   }
+  
 
   render() {
     const errorMessage = this.state.error ? <Notification message={this.state.error}/> : null
     const notification = this.state.notification ? <Notification message={this.state.notification}/> : null
-    if (this.state.user == null) {
+
+    const loginForm = () => {
+      const hideWhenVisible = { display: this.state.loginVisible ? 'none' : '' }
+      const showWhenVisible = { display: this.state.loginVisible ? '' : 'none' }
+
+
       return (
         <div>
-          {errorMessage}
-          <h2>Kirjaudu sovellukseen</h2>
-          <form onSubmit={this.login}>
-          <div>
-            Käyttäjätunnus
-            <input type="text" value={this.state.username} 
-            onChange={this.handleLoginFieldChange} name="username"/>
+          <div style={hideWhenVisible}>
+            <button onClick={e => this.setState({ loginVisible: true })}>log in</button>
           </div>
-          <div>
-            Salasana
-            <input type="password" value={this.state.password}
-            onChange={this.handleLoginFieldChange} name="password"/>
+          <div style={showWhenVisible}>
+            <LoginForm
+              username={this.state.username}
+              password={this.state.password}
+              handleChange={this.handleLoginFieldChange}
+              handleSubmit={this.login}
+            />
+            <button onClick={e => this.setState({ loginVisible: false })}>cancel</button>
           </div>
-          <button type="submit">Kirjaudu</button>
-          </form>
         </div>
       )
     }
+
+    const blogForm = () => (
+      <Togglable buttonLabel="new blog">
+        <BlogForm
+          handleSubmit={this.newBlog}
+          handleChange={this.handleNewBlogFieldChange}
+          title={this.state.title}
+          author={this.state.author}
+          url={this.state.url}
+        />
+      </Togglable>
+    )
+
     return (
       <div>
-        <div>
-          {this.state.user.username} logged in.
-          <button onClick={this.logout}>log out</button>
+        <h1>Blogs</h1>
+
+        <Notification message={this.state.error}/>
+        <Notification message={this.state.notification}/>
+
+        {this.state.user === null ?
+          loginForm() :
+          <div>
+           {this.state.user.username} logged in.
+            <button onClick={this.logout}>log out</button>
+            {blogForm()}
         </div>
-        <div>
-        {notification}
-          <h2>Create new</h2>
-          <form onSubmit={this.newBlog}>
-            <div>
-              Title
-              <input type="text" value={this.state.title}
-              onChange={this.handleNewBlogFieldChange} name="title"></input>
-            </div>
-            <div>
-              Author
-              <input type="text" value={this.state.author}
-              onChange={this.handleNewBlogFieldChange} name="author"></input>
-            </div>
-            <div>
-              Url
-              <input type="text" value={this.state.url}
-              onChange={this.handleNewBlogFieldChange} name="url"></input>
-            </div>
-            <button type="submit">Create</button>
-          </form>
-        </div>
-        <h2>blogs</h2>
+        }
+          
+        <h2>Blogs</h2>
         {this.state.blogs.map(blog => 
           <Blog key={blog.id} blog={blog}/>
         )}
