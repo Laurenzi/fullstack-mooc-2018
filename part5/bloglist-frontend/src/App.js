@@ -14,6 +14,7 @@ class App extends React.Component {
       blogs: [],
       user: null,
       error: null,
+      notification: null,
       username: "",
       password: ""
     }
@@ -78,16 +79,46 @@ class App extends React.Component {
       url: this.state.url
     }
     const createdBlog = await blogService.create(blogObject)
+    createdBlog.id = createdBlog._id
+    delete createdBlog._id
+    console.log('createdBlog:', createdBlog)
     this.setState( {notification: `a new blog '${blogObject.title}' by ${blogObject.author} was added`, title: '', author: '', url: '', blogs: this.state.blogs.concat(createdBlog)} )
     setTimeout(() => {
       this.setState({ notification: null })
     }, 5000)
   }
+
+  removeBlog = (blogToRemove) => {
+    return async () => {
+      console.log('Yritetään poistaa blogia', blogToRemove)
+      const result = await blogService.remove(blogToRemove)
+      const newBlogs = this.state.blogs.filter(blog => blog.id !== blogToRemove.id)
+      this.setState({ blogs: newBlogs, notification: `removed blog ${blogToRemove.title} by ${blogToRemove.author}`})
+      setTimeout(() => {
+        this.setState({ notification: null })
+      }, 5000)
+    }
+  }
+
+  updateLikes = (blogToUpdate) => {
+    return async () => {
+      console.log('Yritetään päivittää blogin tykkäyksiä', blogToUpdate)
+      const blogs = this.state.blogs
+      const result = await blogService.update({...blogToUpdate, likes: blogToUpdate.likes + 1} )
+      const newBlogs = blogs
+        .map(blog => blog.id == blogToUpdate.id ? {...blog, likes: blog.likes + 1} : blog)
+      this.setState( {blogs: newBlogs, notification: `updated likes of blog ${blogToUpdate.title} by ${blogToUpdate.author}`})
+      setTimeout(() => {
+        this.setState({ notification: null })
+      }, 5000)
+    }
+  }
   
 
   render() {
-    const errorMessage = this.state.error ? <Notification message={this.state.error}/> : null
-    const notification = this.state.notification ? <Notification message={this.state.notification}/> : null
+
+    const blogsToShow = [...this.state.blogs].sort((a, b) => b.likes - a.likes)
+    console.log('Sortatut blogit:', blogsToShow)
 
     const loginForm = () => {
       const hideWhenVisible = { display: this.state.loginVisible ? 'none' : '' }
@@ -141,8 +172,13 @@ class App extends React.Component {
         }
           
         <h2>Blogs</h2>
-        {this.state.blogs.map(blog => 
-          <Blog key={blog.id} blog={blog}/>
+        {blogsToShow.map(blog => 
+          <Blog key={blog.id}
+            blog={blog}
+            handleLike={this.updateLikes(blog)}
+            handleRemove={this.removeBlog(blog)}
+            renderDelete={this.state.user.id === blog.user._id}
+          />
         )}
       </div>
     );
