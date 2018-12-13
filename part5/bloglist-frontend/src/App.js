@@ -81,6 +81,7 @@ class App extends React.Component {
     const createdBlog = await blogService.create(blogObject)
     createdBlog.id = createdBlog._id
     delete createdBlog._id
+    createdBlog.user = this.state.user
     console.log('createdBlog:', createdBlog)
     this.setState( {notification: `a new blog '${blogObject.title}' by ${blogObject.author} was added`, title: '', author: '', url: '', blogs: this.state.blogs.concat(createdBlog)} )
     setTimeout(() => {
@@ -177,7 +178,7 @@ class App extends React.Component {
             blog={blog}
             handleLike={this.updateLikes(blog)}
             handleRemove={this.removeBlog(blog)}
-            renderDelete={this.state.user.id === blog.user._id}
+            renderDelete={this.state.user == null ? false : (this.state.user.name ? this.state.user.name === (blog.user.name) : false)}
           />
         )}
       </div>
