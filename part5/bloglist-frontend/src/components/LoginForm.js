@@ -30,4 +30,10 @@ const LoginForm = ({ handleSubmit, handleChange, username, password }) => {
   )
 }
 
+LoginForm.PropTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleChange: PropTypes.func.isRequired,
+  username: PropTypes.string.isRequired,
+  password: PropTypes.string.isRequired
+}
 export default LoginForm

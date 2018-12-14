@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 const blogStyle = {
   paddingTop: 10,
@@ -47,6 +48,13 @@ class Blog extends React.Component {
       </div>
       )
   }
+}
+
+Blog.PropTypes = {
+  handleSubmit: PropTypes.func.isRequired,
+  handleLike: PropTypes.func.isRequired,
+  handleRemove: PropTypes.func.isRequired,
+  renderDelete: PropTypes.bool.isRequired
 }
 
 export default Blog
