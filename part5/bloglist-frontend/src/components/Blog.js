@@ -28,18 +28,18 @@ class Blog extends React.Component {
     const renderDelete = this.props.renderDelete
     return (
       <div>
-        <div style={blogStyle} onClick={this.toggleShow}>
+        <div className='blog-title-and-author' style={blogStyle} onClick={this.toggleShow}>
           {blog.title} {blog.author}
         </div>
         {this.state.show ? (
         <div>
-          <div>
+          <div className='blog-url'>
             {blog.url}
           </div>
-          <div>
+          <div className='blog-likes'>
             {blog.likes} likes <button onClick={handleLike}>like</button>
           </div>
-          <div>
+          <div className='blog-author'>
             added by {blog.user.name}
           </div>
           {renderDelete ? <button onClick={handleRemove}>Delete</button> : null}
@@ -50,7 +50,7 @@ class Blog extends React.Component {
   }
 }
 
-Blog.PropTypes = {
+Blog.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
   handleLike: PropTypes.func.isRequired,
   handleRemove: PropTypes.func.isRequired,

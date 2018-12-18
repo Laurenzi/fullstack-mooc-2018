@@ -31,7 +31,7 @@ class Togglable extends React.Component {
   }
 }
 
-Togglable.PropTypes = {
+Togglable.propTypes = {
   buttonLabel: PropTypes.string.isRequired
 }
 
