@@ -1,8 +1,8 @@
 import React from 'react'
-import { shallow } from 'enzyme'
+import { shallow, mount } from 'enzyme'
 import Blog from './Blog'
 
-describe.only('<Blog />', () => {
+describe('<Blog />', () => {
   it('renders content', () => {
     const blog = {
       title: 'TDD Rocks!',
@@ -30,6 +30,28 @@ describe.only('<Blog />', () => {
   })
 
   it('calls like handler two times when the like button is clicked twice', () => {
+    const blog = {
+      title: 'TDD Rocks!',
+      author: 'Sharmak Karmak',
+      url: 'http://testing',
+      likes: 10,
+      user: {
+        name: 'testiuser',
+        username: 'test'
+      }
+    }
+
+    const mockHandler = jest.fn()
+    const blogComponent = shallow(<Blog blog={blog} handleLike={mockHandler} />)
+    const titleAndAuthorDiv = blogComponent.find('.blog-title-and-author')
+    titleAndAuthorDiv.simulate('click')
+    const button = blogComponent.find('button')
+    console.log(button.debug())
+    button.simulate('click').simulate('click')
+    expect(mockHandler.mock.calls.length).toBe(2)
+  })
+
+  it('Shows only the login form to user who is not logged in', () => {
     const blog = {
       title: 'TDD Rocks!',
       author: 'Sharmak Karmak',

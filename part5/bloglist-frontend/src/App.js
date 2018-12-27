@@ -131,7 +131,7 @@ class App extends React.Component {
           <div style={hideWhenVisible}>
             <button onClick={e => this.setState({ loginVisible: true })}>log in</button>
           </div>
-          <div style={showWhenVisible}>
+          <div className='login-form' style={showWhenVisible}>
             <LoginForm
               username={this.state.username}
               password={this.state.password}
